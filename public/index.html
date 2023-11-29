@@ -7,7 +7,7 @@
     <div class="container-fluid" style="margin: 2rem">
 
       <!-- LOGIN FORM -->
-      <div class="row" id="login-form" style="display: block">
+      <div class="row" id="login-form" style="display: none">
         <div class="col-md-offset-4 col-md-4 text-center well">
           <form>
             <h2>Log in</h2>
@@ -23,6 +23,8 @@
           </form>
         </div>
       </div>
+
+      <!-- SIGNUP FORM -->
       <div class="row" id="signup-form-container" style="display: none">
         <div class="col-md-offset-4 col-md-4 text-center well">
           <form id="signup-form">
@@ -46,6 +48,8 @@
           </form>
         </div>
       </div>
+
+      <!-- NEW TASK FORM -->
       <div class="row" id="new-task-form" style="display: block">
         <div class="col-md-offset-4 col-md-4">
           <form>
@@ -67,6 +71,8 @@
         </div>
       </div>
     </div>
+
+    <!-- JS -->
     <script>
       let users = [{ id: 1, username: 'user1', password: 'pass1' }];
       // let tasks = [{ id: 1, desc: 'Groceries'}];
