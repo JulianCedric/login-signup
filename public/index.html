@@ -74,9 +74,12 @@
 
     <!-- JS -->
     <script>
+      
+      // DATA
       let users = [{ id: 1, username: 'user1', password: 'pass1' }];
-      // let tasks = [{ id: 1, desc: 'Groceries'}];
       let tasks = [];
+
+      // LOGIN FORM
       document.getElementById('login-form').addEventListener('submit', function(e) {
         e.preventDefault();
 
@@ -100,6 +103,8 @@
           };
         };
       });
+      
+      // NEW TASK FORM - SUBMIT
       document.getElementById('new-task-form').addEventListener('submit', function(e) {
         e.preventDefault();
         // console.log('e:', e);
@@ -118,6 +123,11 @@
         newTaskDiv.innerHTML = `
           <input id='task-${newId}' type='checkbox' style='text-decoration: none'>
           <label for='task-${newId}'> ${newTask}</label>
+          <div class='row' id='edit-task-${newId}' well>
+            <div class='col-xs-4'>
+              <button id='edit-task-btn' class='btn btn-default'>edit</button>
+            </div>
+          </div>
         `
         // tasksOl.appendChild(newTaskLi);
         tasksOl.appendChild(newTaskDiv);
@@ -126,6 +136,12 @@
         console.log('user added new task');
       }); 
 
+      // EDIT TASK
+      document.getElementById('edit-task-btn').addEventListener('click', function(e) {
+        console.log('user clicked edit task button');
+      });
+
+      // NEW TASK FORM - CLICK (CHECKBOX)
       document.getElementById('task-checkbox').addEventListener('click', function(e) {
         console.log('checked');
         console.log('e:', e);
