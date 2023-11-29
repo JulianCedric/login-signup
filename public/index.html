@@ -123,10 +123,8 @@
         newTaskDiv.innerHTML = `
           <input id='task-${newId}' type='checkbox' style='text-decoration: none'>
           <label for='task-${newId}'> ${newTask}</label>
-          <div class='row' id='edit-task-${newId}' well>
-            <div class='col-xs-4'>
-              <button id='edit-task-btn' class='btn btn-default'>edit</button>
-            </div>
+          <div>
+            <button id='edit-task-btn-${newId}' class='btn btn-default'>edit</button>
           </div>
         `
         // tasksOl.appendChild(newTaskLi);
@@ -137,9 +135,22 @@
       }); 
 
       // EDIT TASK
-      document.getElementById('edit-task-btn').addEventListener('click', function(e) {
-        console.log('user clicked edit task button');
+      document.getElementById('tasks-ol').addEventListener('click', function(e) {
+        if (e.target && e.target.id.startsWith('edit-task-btn')) {
+          let taskId = e.target.id.split('-')[3];
+          console.log('taskId:', taskId);
+
+          editTask(taskId);
+          
+          console.log('user clicked edit task button');
+          console.log('e.target.id:', e.target.id);
+          console.log('task #', taskId);
+        };
       });
+
+      function editTask(taskId) {
+        console.log('user is editing task #', taskId);
+      }
 
       // NEW TASK FORM - CLICK (CHECKBOX)
       document.getElementById('task-checkbox').addEventListener('click', function(e) {
