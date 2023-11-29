@@ -21,7 +21,7 @@
           </form>
         </div>
       </div>
-      <div class="row" id="signup-form-container" style="display: block">
+      <div class="row" id="signup-form-container" style="display: none">
         <div class="col-md-offset-4 col-md-4 text-center well">
           <form id="signup-form">
             <h2>Sign up</h2>
@@ -56,10 +56,10 @@
           <hr>
           <div>
             <ol id="tasks-ol">
-              <div>
+<!--          <div>
                 <input id="task-checkbox" type="checkbox" style="text-decoration: none">
-                <label id="task-text" for="task-checkbox"> Drink liquor</label>
-              </div>
+                <label id="task-1" for="task-checkbox"> Groceries</label>
+              </div> -->
             </ol>
           </div>
         </div>
@@ -67,6 +67,7 @@
     </div>
     <script>
       let users = [{ id: 1, username: 'user1', password: 'pass1' }];
+      // let tasks = [{ id: 1, desc: 'Groceries'}];
       let tasks = [];
       document.getElementById('login-form').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -103,9 +104,15 @@
         console.log('tasks:', tasks);
 
         let tasksOl = document.getElementById('tasks-ol');
-        let newTaskLi = document.createElement('li');
-        newTaskLi.innerText = newTask;
-        tasksOl.appendChild(newTaskLi);
+        // let newTaskLi = document.createElement('li');
+        let newTaskDiv = document.createElement('div');
+        // newTaskLi.innerText = newTask;
+        newTaskDiv.innerHTML = `
+          <input id='task-${newId}' type='checkbox' style='text-decoration: none'>
+          <label for='task-${newId}'> ${newTask}</label>
+        `
+        // tasksOl.appendChild(newTaskLi);
+        tasksOl.appendChild(newTaskDiv);
         document.getElementById('new-task').value = '';
         document.getElementById('username').focus();
         console.log('user added new task');
