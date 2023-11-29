@@ -70,6 +70,19 @@
           </div>
         </div>
       </div>
+
+      <!-- EDIT TASK FORM -->
+      <div class="row" id="edit-task-form" style="display: none">
+        <div class="col-md-offset-4 col-md-4">
+          <form>
+            <h2 class="text-center">Edit Task Form</h2>
+            <div class="form-group">
+              <input class="form-control">
+            </div>
+          </form>
+        </div>
+
+      </div>
     </div>
 
     <!-- JS -->
@@ -123,8 +136,13 @@
         newTaskDiv.innerHTML = `
           <input id='task-${newId}' type='checkbox' style='text-decoration: none'>
           <label for='task-${newId}'> ${newTask}</label>
-          <div>
-            <button id='edit-task-btn-${newId}' class='btn btn-default'>edit</button>
+          <div class='row'>
+            <div class='col-xs-3'>
+              <button id='edit-task-btn-${newId}' class='btn btn-default'>edit</button>
+            </div>
+            <div>
+              <button id='delete-task-btn-${newId}' class='btn btn-default'>delete</button>
+            </div>
           </div>
         `
         // tasksOl.appendChild(newTaskLi);
@@ -141,16 +159,28 @@
           console.log('taskId:', taskId);
 
           editTask(taskId);
-          
-          console.log('user clicked edit task button');
-          console.log('e.target.id:', e.target.id);
-          console.log('task #', taskId);
         };
       });
 
       function editTask(taskId) {
         console.log('user is editing task #', taskId);
-      }
+
+
+      };
+
+      // DELETE TASK
+      document.getElementById('tasks-ol').addEventListener('click', function(e) {
+        if (e.target && e.target.id.startsWith('delete-task-btn')) {
+          let taskId = e.target.id.split('-')[3];
+          console.log('taskId:', taskId);
+
+          deleteTask(taskId);
+        };
+      });
+
+      function deleteTask(taskId) {
+        console.log('user deleted task #', taskId);
+      };
 
       // NEW TASK FORM - CLICK (CHECKBOX)
       document.getElementById('task-checkbox').addEventListener('click', function(e) {
