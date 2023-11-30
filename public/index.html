@@ -69,13 +69,14 @@
       </div>
 
       <!-- EDIT TASK FORM -->
-      <div class="row" id="edit-task-form" style="display: none">
+      <div class="row" id="edit-task-form-container" style="display: none">
         <div class="col-md-offset-4 col-md-4">
-          <form>
+          <form id="edit-task-form">
             <h2 class="text-center">Edit Task Form</h2>
             <div class="form-group">
-              <input class="form-control">
+              <input class="form-control" id="edit-task" placeholder="...">
             </div>
+            <button class="btn btn-default" type="submit">Submit</button>
           </form>
         </div>
 
@@ -198,14 +199,32 @@
           let taskId = e.target.id.split('-')[3];
           console.log('taskId:', taskId);
           editTask(taskId);
+        } else if (e.target && e.target.id.startsWith('save-task-btn')) {
+          let taskId = e.target.id.split('-')[3];
+          saveEditedTask(taskId)
+        };
+
+        function editTask(taskId) {
+          console.log('user is editing task #', taskId);
+
+          let taskLabel = document.getElementById(`label-task-${taskId}`);
+          let taskText = taskLabel.innerText;
+          let editInputHtml = `<input type='text' id='input-task-${taskId}' value='${taskText}'>`;
+          let saveButtonHtml = `<button id='save-task-btn-${taskId}' class='btn btn-default'>save</button>`;
+          taskLabel.innerHTML = editInputHtml + saveButtonHtml;
+
+          document.getElementById('edit-task-form-container').style.display = 'block';
+          document.getElementById('edit-task').focus();
         };
       });
 
-      function editTask(taskId) {
-        console.log('user is editing task #', taskId);
+      // EDIT TASK FORM
+      document.getElementById('edit-task-form').addEventListener('submit', function(e) {
+        console.log('here');
 
-        document.getElementById('edit-task-form').style.display = 'block';
-      };
+        let updatedTaskDesc = document.getElementById('edit-task').value;
+
+      });
 
       // DELETE TASK
       document.getElementById('tasks-ol').addEventListener('click', function(e) {
@@ -214,9 +233,7 @@
           console.log('user clicked delete btn for task #', taskId);
           deleteTask(taskId);
         };
-      });
-
-      function deleteTask(taskId) {
+        function deleteTask(taskId) {
         taskId = parseInt(taskId);
         let updatedTasks = tasks.filter(task => task.id !== taskId);
         tasks = updatedTasks;
@@ -229,6 +246,7 @@
           taskElem.remove();
         };
       };
+      });
 
       // NEW TASK FORM - CLICK (CHECKBOX)
       document.getElementById('task-checkbox').addEventListener('click', function(e) {
