@@ -6,8 +6,9 @@
   </head>
 <body>
   <div class="container-fluid" style="margin: 3rem;">
-      <!-- LOGIN FORM -->
-      <div class="row" id="login-form-container" style="display: block">
+      
+    <!-- LOGIN FORM -->
+      <div class="row" id="login-form-container" style="display: none">
         <div class="col-md-offset-4 col-md-4 text-center well">
           <form id="login-form">
             <h2>Log in</h2>
@@ -23,6 +24,7 @@
           </form>
         </div>
       </div>
+      
       <!-- SIGNUP FORM -->
       <div class="row" id="signup-form-container" style="display: none">
         <div class="col-md-offset-4 col-md-4 text-center well">
@@ -48,57 +50,8 @@
         </div>
       </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
       <!-- NEW TASK FORM -->
-      <div class="row" id="new-task-form-container" style="display: none">
+      <div class="row" id="new-task-form-container" style="display: block">
         <div class="col-md-offset-4 col-md-4">
           <form id="new-task-form">
             <h2 class="text-center">Tasks</h2>
@@ -115,55 +68,6 @@
         </div>
       </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
       <!-- EDIT TASK FORM -->
       <div class="row" id="edit-task-form" style="display: none">
         <div class="col-md-offset-4 col-md-4">
@@ -177,8 +81,10 @@
 
       </div>
     </div>
+
     <!-- JavaScript -->
     <script>
+
       // DATA
       let users = [{ id: 1, email: 'user1@email.com', firstName: 'Lil', lastName: 'JJ', username: 'user1', password: 'pass1' }];
       let tasks = [];
@@ -291,7 +197,6 @@
         if (e.target && e.target.id.startsWith('edit-task-btn')) {
           let taskId = e.target.id.split('-')[3];
           console.log('taskId:', taskId);
-
           editTask(taskId);
         };
       });
@@ -306,7 +211,7 @@
       document.getElementById('tasks-ol').addEventListener('click', function(e) {
         if (e.target && e.target.id.startsWith('delete-task-btn')) {
           let taskId = e.target.id.split('-')[3];
-          console.log('taskId:', taskId);
+          console.log('user clicked delete btn for task #', taskId);
           deleteTask(taskId);
         };
       });
@@ -315,9 +220,14 @@
         taskId = parseInt(taskId);
         let updatedTasks = tasks.filter(task => task.id !== taskId);
         tasks = updatedTasks;
-        console.log('user deleted task #', taskId);
-        console.log('updatedTasks:', updatedTasks);
+
+        console.log('task #', taskId, ' deleted');
         console.log('tasks:', tasks);
+
+        let taskElem = document.getElementById(`task-${taskId}`).parentNode.parentNode;
+        if (taskElem) {
+          taskElem.remove();
+        };
       };
 
       // NEW TASK FORM - CLICK (CHECKBOX)
