@@ -1,10 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous"/>
-  </head>
-  <body>
-    <div class="container-fluid" style="margin: 2rem">
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous"/>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" crossorigin="anonymous">
+  <style>
+    .container-fluid {
+      margin: 2rem;
+    }
+    /* Add more custom styles here */
+  </style>
+</head>
+<body>
+  <div class="container-fluid">
+    
 
       <!-- LOGIN FORM -->
       <div class="row" id="login-form" style="display: none">
@@ -84,9 +92,12 @@
 
       </div>
     </div>
+    <!-- Forms: Login, Signup, New Task, Edit Task -->
+    <!-- ... (your existing form structure) ... -->
+  </div>
 
-    <!-- JS -->
-    <script>
+  <!-- JavaScript -->
+      <script>
       
       // DATA
       let users = [{ id: 1, username: 'user1', password: 'pass1' }];
@@ -133,14 +144,20 @@
         let newTaskDiv = document.createElement('div');
         // newTaskLi.innerText = newTask;
         newTaskDiv.innerHTML = `
-          <input id='task-${newId}' type='checkbox' style='text-decoration: none'>
-          <label for='task-${newId}'> ${newTask}</label>
-          <div class='row'>
-            <div class='col-xs-3'>
-              <button id='edit-task-btn-${newId}' class='btn btn-default'>edit</button>
+          <div class="row">
+            <div class="col-xs-8">
+              <input id="task-${newId}" type="checkbox" style="text-decoration: none;">
+              <label for="task-${newId}">${newTask}</label>
             </div>
-            <div>
-              <button id='delete-task-btn-${newId}' class='btn btn-default'>delete</button>
+            <div class="col-xs-2">
+              <button id="edit-task-btn-${newId}" class="btn btn-default" style="width: 100%">
+                <i class="fa fa-edit"></i>
+              </button>
+            </div>
+            <div class="col-xs-2">
+              <button id="delete-task-btn-${newId}" class="btn btn-default" style="width: 100%">
+                <i class="fa fa-trash"></i>
+              </button>
             </div>
           </div>
         `
@@ -166,8 +183,6 @@
         console.log('user is editing task #', taskId);
 
         document.getElementById('edit-task-form').style.display = 'block';
-
-
       };
 
       // DELETE TASK
@@ -200,5 +215,5 @@
         };
       });
     </script> 
-  </body>
+</body>
 </html>
