@@ -48,9 +48,9 @@
         </div>
       </div>
       <!-- NEW TASK FORM -->
-      <div class="row" id="new-task-form" style="display: none">
+      <div class="row" id="new-task-form-container" style="display: none">
         <div class="col-md-offset-4 col-md-4">
-          <form>
+          <form class="new-task-form">
             <h2 class="text-center">Tasks</h2>
             <div class="form-group">
               <input class="form-control" id="new-task" placeholder="New task" required>
@@ -85,7 +85,7 @@
     <script>
       
       // DATA
-      let users = [{ id: 1, username: 'user1', password: 'pass1' }];
+      let users = [{ id: 1, email: '', firstName: '', lastName: '', username: 'user1', password: 'pass1' }];
       let tasks = [];
 
       document.addEventListener('DOMContentLoaded', function() {
@@ -104,7 +104,7 @@
             console.log('user logged in');
 
             document.getElementById('login-form-container').style.display = 'none';
-            document.getElementById('new-task-form').style.display = 'block';
+            document.getElementById('new-task-form-container').style.display = 'block';
             document.getElementById('new-task').focus();
 
           } else {
@@ -123,6 +123,37 @@
         document.getElementById('login-form-container').style.display = 'none';
         document.getElementById('signup-form-container').style.display = 'block';
         document.getElementById('email').focus();
+      });
+
+      // SIGNUP FORM
+      document.getElementById('signup-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        console.log('test');
+
+        let newId = users.length + 1;
+        let email = document.getElementById('email').value;
+        let firstName = document.getElementById('first-name').value;
+        let lastName = document.getElementById('last-name').value;
+        let newUsername = document.getElementById('new-username').value;
+        let newPassword = document.getElementById('new-password').value;
+
+        let newUser = {
+          id: newId,
+          email: email,
+          firstName: firstName,
+          lastName: lastName,
+          username: newUsername,
+          password: newPassword
+        };
+        users.push(newUser);
+        console.log(users);
+
+        document.getElementById('signup-form-container').style.display = 'none';
+        document.getElementById('new-task-form-container').style.display = 'block';
+        document.getElementById('new-task').focus();
+
+        console.log('user signed up')
       });
       
       // NEW TASK FORM - SUBMIT
