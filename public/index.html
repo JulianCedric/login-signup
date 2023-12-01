@@ -4,13 +4,18 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" crossorigin="anonymous">
   </head>
-<body>
-  <div class="container-fluid" style="margin: 3rem;">
+  <body>
+    <div id="header-div" style="display: none;">
+      <header class="header">
+        <a href="#login-form-container" id="logout-link">Log out</a>
+      </header>
+    </div>
+    <div class="container-fluid" style="margin: 3rem;">
       
     <!-- LOGIN FORM -->
-      <div class="row" id="login-form-container" style="display: none;">
+      <div class="row" id="login-form-container" style="display: block;">
         <div class="col-md-offset-4 col-md-4 text-center well">
-          <form id="login-form" style="max-width: 320px;">
+          <form id="login-form">
             <h2>Log in</h2>
             <div class="form-group">
               <input class="form-control" id="username" type="text" placeholder="Username" required>
@@ -28,10 +33,10 @@
       <!-- SIGNUP FORM -->
       <div class="row" id="signup-form-container" style="display: none">
         <div class="col-md-offset-4 col-md-4 text-center well">
-          <form id="signup-form" style="max-width: 320px;">
+          <form id="signup-form">
             <h2>Sign up</h2>
             <div class="form-group">
-              <input class="form-control" id="email" type="email" placeholder="Email" required>
+              <input class="form-control" id="new-email" type="email" placeholder="Email" required>
             </div>
             <div class="form-group">
               <input class="form-control" id="first-name" type="text" placeholder="First Name" required>
@@ -46,14 +51,16 @@
               <input class="form-control" id="new-password" type="password" placeholder="Password" required>
             </div>
             <button class="btn btn-block btn-primary" type="submit">Sign Up</button>
+            <hr>
+            <h4>Already have an account? <a href="#login-form-container" id="login-link">Log in</a></h4>
           </form>
         </div>
       </div>
 
       <!-- NEW TASK FORM -->
-      <div class="row" id="new-task-form-container" style="display: block;">
+      <div class="row" id="new-task-form-container" style="display: none;">
         <div class="col-md-offset-4 col-md-4">
-          <form id="new-task-form" style="max-width: 320px;">
+          <form id="new-task-form">
             <h2 class="text-center">Tasks</h2>
             <div class="form-group">
               <input class="form-control" id="new-task" placeholder="New task" required>
@@ -62,7 +69,7 @@
           </form>
           <hr>
           <div>
-            <ol id="tasks-ol" style="max-width: 320px;">
+            <ol id="tasks-ol">
             </ol>
           </div>
         </div>
@@ -110,8 +117,11 @@
 
         for (let i = 0; i < users.length; i++) {
           if (users[i].username == username && users[i].password == password) {
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
             document.getElementById('login-form-container').style.display = 'none';
             document.getElementById('new-task-form-container').style.display = 'block';
+            document.getElementById('header-div').style.display = 'block';
             document.getElementById('new-task').focus();
             console.log('user logged in');
           } else {
@@ -128,7 +138,7 @@
       document.getElementById('signup-link').addEventListener('click', function(e) {
         document.getElementById('login-form-container').style.display = 'none';
         document.getElementById('signup-form-container').style.display = 'block';
-        document.getElementById('email').focus();
+        document.getElementById('new-email').focus();
         console.log('user clicked signup link');
       });
 
@@ -137,7 +147,7 @@
         e.preventDefault();
 
         let newId = users.length + 1;
-        let email = document.getElementById('email').value;
+        let email = document.getElementById('new-email').value;
         let firstName = document.getElementById('first-name').value;
         let lastName = document.getElementById('last-name').value;
         let newUsername = document.getElementById('new-username').value;
@@ -157,8 +167,25 @@
 
         document.getElementById('signup-form-container').style.display = 'none';
         document.getElementById('new-task-form-container').style.display = 'block';
+        document.getElementById('header-div').style.display = 'block';
         document.getElementById('new-task').focus();
         console.log('new user signed up');
+      });
+
+      // LOGIN LINK 
+      document.getElementById('login-link').addEventListener('click', function(e) {
+        document.getElementById('signup-form-container').style.display = 'none';
+        document.getElementById('login-form-container').style.display = 'block';
+        document.getElementById('username').focus();
+        console.log('user clicked signup link');
+      });
+
+      // LOGOUT LINK
+      document.getElementById('logout-link').addEventListener('click', function(e) {
+        document.getElementById('new-task-form-container').style.display = 'none';
+        document.getElementById('login-form-container').style.display = 'block';
+        document.getElementById('username').focus();
+        console.log('user logged out');
       });
       
       // NEW TASK FORM - SUBMIT
@@ -172,7 +199,7 @@
         let newTaskDesc = document.getElementById('new-task').value;
         let newTask = { id: newId, desc: newTaskDesc};
         tasks.push(newTask);
-        console.log('new task created');
+        console.log("'tasks' updated");
         console.log('tasks:', tasks);
 
         let tasksOl = document.getElementById('tasks-ol');
@@ -271,7 +298,11 @@
         };
       });
 
-      // NEW TASK FORM - CLICK (CHECKBOX)
+      // COMPLETE TASK (CHECKBOX)
+      
+
+
+
       // document.getElementById('task-checkbox').addEventListener('click', function(e) {
       //   console.log('checked');
       //   console.log('e:', e);
