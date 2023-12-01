@@ -8,9 +8,9 @@
   <div class="container-fluid" style="margin: 3rem;">
       
     <!-- LOGIN FORM -->
-      <div class="row" id="login-form-container" style="display: none">
+      <div class="row" id="login-form-container" style="display: none;">
         <div class="col-md-offset-4 col-md-4 text-center well">
-          <form id="login-form">
+          <form id="login-form" style="max-width: 275px;">
             <h2>Log in</h2>
             <div class="form-group">
               <input class="form-control" id="username" type="text" placeholder="Username" required>
@@ -28,7 +28,7 @@
       <!-- SIGNUP FORM -->
       <div class="row" id="signup-form-container" style="display: none">
         <div class="col-md-offset-4 col-md-4 text-center well">
-          <form id="signup-form">
+          <form id="signup-form" style="max-width: 275px;">
             <h2>Sign up</h2>
             <div class="form-group">
               <input class="form-control" id="email" type="email" placeholder="Email" required>
@@ -51,9 +51,9 @@
       </div>
 
       <!-- NEW TASK FORM -->
-      <div class="row" id="new-task-form-container" style="display: block">
+      <div class="row" id="new-task-form-container" style="display: block;">
         <div class="col-md-offset-4 col-md-4">
-          <form id="new-task-form">
+          <form id="new-task-form" style="max-width: 275px;">
             <h2 class="text-center">Tasks</h2>
             <div class="form-group">
               <input class="form-control" id="new-task" placeholder="New task" required>
@@ -62,23 +62,11 @@
           </form>
           <hr>
           <div>
-            <ol id="tasks-ol">
+            <ol id="tasks-ol" style="max-width: 275px;">
             </ol>
           </div>
         </div>
       </div>
-
-      <!-- EDIT TASK FORM -->
-      <div class="row" id="edit-task-form-container" style="display: none">
-        <div class="col-md-offset-4 col-md-4">
-          <form id="edit-task-form">
-            <h2 class="text-center">Edit Task Form</h2>
-            <div class="form-group">
-              <input class="form-control" id="edit-task" placeholder="...">
-            </div>
-            <button class="btn btn-default" type="submit">Submit</button>
-          </form>
-        </div>
 
       </div>
     </div>
@@ -173,7 +161,7 @@
           <div class="row">
             <div class="col-xs-8">
               <input id="task-${newId}" type="checkbox" style="text-decoration: none;">
-              <label for="task-${newId}">${newTaskDesc}</label>
+              <label id="label-task-${newId}" for="task-${newId}">${newTaskDesc}</label>
             </div>
             <div class="col-xs-2">
               <button id="edit-task-btn-${newId}" class="btn btn-default" style="width: 100%; border: none;">
@@ -200,30 +188,36 @@
           console.log('taskId:', taskId);
           editTask(taskId);
         } else if (e.target && e.target.id.startsWith('save-task-btn')) {
+          // e.stopPropagation();
           let taskId = e.target.id.split('-')[3];
           saveEditedTask(taskId)
-        };
+        }; 
 
         function editTask(taskId) {
           console.log('user is editing task #', taskId);
 
-          let taskLabel = document.getElementById(`label-task-${taskId}`);
+          let taskLabel = document.getElementById(`label-task-${taskId}`);          
           let taskText = taskLabel.innerText;
-          let editInputHtml = `<input type='text' id='input-task-${taskId}' value='${taskText}'>`;
-          let saveButtonHtml = `<button id='save-task-btn-${taskId}' class='btn btn-default'>save</button>`;
-          taskLabel.innerHTML = editInputHtml + saveButtonHtml;
-
-          document.getElementById('edit-task-form-container').style.display = 'block';
-          document.getElementById('edit-task').focus();
+          console.log('taskLabel:', taskText);
+          
+          let editInputHtml = `<input id='new-task-${taskId}' type='text' value='${taskText}'>`;
+          let space = `<span> </span>`;
+          let saveButtonHtml = `<button id='save-task-btn-${taskId}' class='btn btn-default' style='border: none;'><i class="fa fa-save"></i></button>`;
+          taskLabel.innerHTML = editInputHtml + space + saveButtonHtml;
         };
-      });
+        
+        function saveEditedTask(taskId) {
+          let editedText = document.getElementById(`new-task-${taskId}`).value;
 
-      // EDIT TASK FORM
-      document.getElementById('edit-task-form').addEventListener('submit', function(e) {
-        console.log('here');
+          // Update the task in your tasks array
+          let taskIndex = tasks.findIndex(task => task.id === parseInt(taskId));
+          if (taskIndex !== -1) {
+            tasks[taskIndex].desc = editedText;
+          };
 
-        let updatedTaskDesc = document.getElementById('edit-task').value;
-
+          let taskLabel = document.getElementById(`label-task-${taskId}`);
+          taskLabel.innerHTML = editedText;
+        };
       });
 
       // DELETE TASK
