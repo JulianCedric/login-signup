@@ -10,7 +10,7 @@
     <!-- LOGIN FORM -->
       <div class="row" id="login-form-container" style="display: none;">
         <div class="col-md-offset-4 col-md-4 text-center well">
-          <form id="login-form" style="max-width: 275px;">
+          <form id="login-form" style="max-width: 320px;">
             <h2>Log in</h2>
             <div class="form-group">
               <input class="form-control" id="username" type="text" placeholder="Username" required>
@@ -28,7 +28,7 @@
       <!-- SIGNUP FORM -->
       <div class="row" id="signup-form-container" style="display: none">
         <div class="col-md-offset-4 col-md-4 text-center well">
-          <form id="signup-form" style="max-width: 275px;">
+          <form id="signup-form" style="max-width: 320px;">
             <h2>Sign up</h2>
             <div class="form-group">
               <input class="form-control" id="email" type="email" placeholder="Email" required>
@@ -53,7 +53,7 @@
       <!-- NEW TASK FORM -->
       <div class="row" id="new-task-form-container" style="display: block;">
         <div class="col-md-offset-4 col-md-4">
-          <form id="new-task-form" style="max-width: 275px;">
+          <form id="new-task-form" style="max-width: 320px;">
             <h2 class="text-center">Tasks</h2>
             <div class="form-group">
               <input class="form-control" id="new-task" placeholder="New task" required>
@@ -62,17 +62,35 @@
           </form>
           <hr>
           <div>
-            <ol id="tasks-ol" style="max-width: 275px;">
+            <ol id="tasks-ol" style="max-width: 320px;">
             </ol>
           </div>
         </div>
       </div>
+    </div>
 
+    <!-- EDIT TASK FORM -->
+    <div class="row" id="edit-task-container" style="display: none">
+      <div class="col-md-offset-4 col-md-4">
+        <form id="edit-task-form">
+          <div class="form-group">
+            <input class="form-control" id="edit-task" required>
+          </div>
+          <div class="row">
+            <div class="col-xs-6">
+              <button class="btn btn-block btn-default" id="save-and-submit-btn" type="submit">Save & Submit</button>
+            </div>
+            <div class="col-xs-6">
+              <button class="btn btn-block btn-default">Cancel</button>
+            </div>
+          </div>
+          </form>
       </div>
     </div>
 
     <!-- JavaScript -->
     <script>
+      let currentEditingTaskId = null;
 
       // DATA
       let users = [{ id: 1, email: 'user1@email.com', firstName: 'Lil', lastName: 'JJ', username: 'user1', password: 'pass1' }];
@@ -187,38 +205,44 @@
           let taskId = e.target.id.split('-')[3];
           console.log('taskId:', taskId);
           editTask(taskId);
-        } else if (e.target && e.target.id.startsWith('save-task-btn')) {
-          // e.stopPropagation();
-          let taskId = e.target.id.split('-')[3];
-          saveEditedTask(taskId)
-        }; 
+        };
 
         function editTask(taskId) {
+          currentEditingTaskId = taskId;
           console.log('user is editing task #', taskId);
-
-          let taskLabel = document.getElementById(`label-task-${taskId}`);          
-          let taskText = taskLabel.innerText;
-          console.log('taskLabel:', taskText);
+          document.getElementById('edit-task-container').style.display = 'block';
           
-          let editInputHtml = `<input id='new-task-${taskId}' type='text' value='${taskText}'>`;
-          let space = `<span> </span>`;
-          let saveButtonHtml = `<button id='save-task-btn-${taskId}' class='btn btn-default' style='border: none;'><i class="fa fa-save"></i></button>`;
-          taskLabel.innerHTML = editInputHtml + space + saveButtonHtml;
-        };
-        
-        function saveEditedTask(taskId) {
-          let editedText = document.getElementById(`new-task-${taskId}`).value;
+          // for (let i = 0; i < tasks.length; i++) {
+          //   if (tasks[i].id == taskId) {
+          //     document.getElementById('edit-task').value = tasks[i].desc;
+          //     document.getElementById('edit-task').focus();
+          //   };
+          // };
 
-          // Update the task in your tasks array
-          let taskIndex = tasks.findIndex(task => task.id === parseInt(taskId));
-          if (taskIndex !== -1) {
-            tasks[taskIndex].desc = editedText;
+          let currentTask = tasks.find(task => task.id == taskId);
+            if (currentTask) {
+              document.getElementById('edit-task').value = currentTask.desc;
+              document.getElementById('edit-task').focus();
+            };
           };
 
-          let taskLabel = document.getElementById(`label-task-${taskId}`);
-          taskLabel.innerHTML = editedText;
-        };
-      });
+          document.getElementById('edit-task-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (currentEditingTaskId !== null) {
+              let updatedTaskDesc = document.getElementById('edit-task').value;
+
+              let taskIndex = tasks.findIndex(task => task.id == currentEditingTaskId);
+              if (taskIndex !== -1) {
+                tasks[taskIndex].desc = updatedTaskDesc;
+                document.getElementById(`label-task-${currentEditingTaskId}`).innerText = updatedTaskDesc;
+                document.getElementById('edit-task-container').style.display = 'none';
+
+                currentEditingTaskId = null; 
+                console.log('tasks:', tasks);
+              };
+            };
+          });
 
       // DELETE TASK
       document.getElementById('tasks-ol').addEventListener('click', function(e) {
@@ -235,7 +259,7 @@
         console.log('task #', taskId, ' deleted');
         console.log('tasks:', tasks);
 
-        let taskElem = document.getElementById(`task-${taskId}`).parentNode.parentNode;
+        let taskElem = document.getElementById(`task-${taskId}`).parentNode;
         if (taskElem) {
           taskElem.remove();
         };
@@ -243,15 +267,15 @@
       });
 
       // NEW TASK FORM - CLICK (CHECKBOX)
-      document.getElementById('task-checkbox').addEventListener('click', function(e) {
-        console.log('checked');
-        console.log('e:', e);
+      // document.getElementById('task-checkbox').addEventListener('click', function(e) {
+      //   console.log('checked');
+      //   console.log('e:', e);
 
-        if (e.target.checked) {
-          document.getElementById('task-text').style.textDecoration = 'line-through';
-        } else {
-          document.getElementById('task-text').style.textDecoration = 'none';
-        };
+      //   if (e.target.checked) {
+      //     document.getElementById('task-text').style.textDecoration = 'line-through';
+      //   } else {
+      //     document.getElementById('task-text').style.textDecoration = 'none';
+      //   };
       });
     </script> 
   </body>
