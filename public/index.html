@@ -91,6 +91,7 @@
     <!-- JavaScript -->
     <script>
       let currentEditingTaskId = null;
+      let totalCount = 0;
 
       // DATA
       let users = [{ id: 1, email: 'user1@email.com', firstName: 'Lil', lastName: 'JJ', username: 'user1', password: 'pass1' }];
@@ -166,7 +167,8 @@
         // console.log('e:', e);
         // console.log('e.target.name:', e.target.name);
 
-        let newId = tasks.length + 1;
+        totalCount += 1;
+        let newId = totalCount;
         let newTaskDesc = document.getElementById('new-task').value;
         let newTask = { id: newId, desc: newTaskDesc};
         tasks.push(newTask);
@@ -176,7 +178,7 @@
         let tasksOl = document.getElementById('tasks-ol');
         let newTaskDiv = document.createElement('div');
         newTaskDiv.innerHTML = `
-          <div class="row">
+          <div class="row" id="task-container-${newId}">
             <div class="col-xs-8">
               <input id="task-${newId}" type="checkbox" style="text-decoration: none;">
               <label id="label-task-${newId}" for="task-${newId}">${newTaskDesc}</label>
@@ -211,38 +213,32 @@
           currentEditingTaskId = taskId;
           console.log('user is editing task #', taskId);
           document.getElementById('edit-task-container').style.display = 'block';
-          
-          // for (let i = 0; i < tasks.length; i++) {
-          //   if (tasks[i].id == taskId) {
-          //     document.getElementById('edit-task').value = tasks[i].desc;
-          //     document.getElementById('edit-task').focus();
-          //   };
-          // };
 
           let currentTask = tasks.find(task => task.id == taskId);
-            if (currentTask) {
-              document.getElementById('edit-task').value = currentTask.desc;
-              document.getElementById('edit-task').focus();
-            };
+          
+          if (currentTask) {
+            document.getElementById('edit-task').value = currentTask.desc;
+            document.getElementById('edit-task').focus();
           };
+        };
 
-          document.getElementById('edit-task-form').addEventListener('submit', function(e) {
-            e.preventDefault();
+      document.getElementById('edit-task-form').addEventListener('submit', function(e) {
+        e.preventDefault();
 
-            if (currentEditingTaskId !== null) {
-              let updatedTaskDesc = document.getElementById('edit-task').value;
+        if (currentEditingTaskId !== null) {
+          let updatedTaskDesc = document.getElementById('edit-task').value;
 
-              let taskIndex = tasks.findIndex(task => task.id == currentEditingTaskId);
-              if (taskIndex !== -1) {
-                tasks[taskIndex].desc = updatedTaskDesc;
-                document.getElementById(`label-task-${currentEditingTaskId}`).innerText = updatedTaskDesc;
-                document.getElementById('edit-task-container').style.display = 'none';
+          let taskIndex = tasks.findIndex(task => task.id == currentEditingTaskId);
+          if (taskIndex !== -1) {
+            tasks[taskIndex].desc = updatedTaskDesc;
+            document.getElementById(`label-task-${currentEditingTaskId}`).innerText = updatedTaskDesc;
+            document.getElementById('edit-task-container').style.display = 'none';
 
-                currentEditingTaskId = null; 
-                console.log('tasks:', tasks);
-              };
-            };
-          });
+            currentEditingTaskId = null; 
+            console.log('tasks:', tasks);
+          };
+        };
+      });
 
       // DELETE TASK
       document.getElementById('tasks-ol').addEventListener('click', function(e) {
@@ -251,19 +247,28 @@
           console.log('user clicked delete btn for task #', taskId);
           deleteTask(taskId);
         };
+
         function deleteTask(taskId) {
-        taskId = parseInt(taskId);
-        let updatedTasks = tasks.filter(task => task.id !== taskId);
-        tasks = updatedTasks;
+          taskId = parseInt(taskId);
+          currentEditingTaskId = taskId;
+          console.log('currentEditingTaskId:', currentEditingTaskId);
+          let updatedTasks = tasks.filter(task => task.id !== taskId);
+          tasks = updatedTasks;
 
-        console.log('task #', taskId, ' deleted');
-        console.log('tasks:', tasks);
+          console.log('task #', taskId, ' deleted');
+          console.log('tasks:', tasks);
 
-        let taskElem = document.getElementById(`task-${taskId}`).parentNode;
-        if (taskElem) {
-          taskElem.remove();
+          let taskElem = document.getElementById(`task-${taskId}`);
+            if (taskElem) {
+              console.log('true')
+              let containerElem = taskElem.parentNode.parentNode;
+              console.log('containerElem:', containerElem);
+              if (containerElem) {
+                containerElem.remove();
+                console.log('here')
+              }
+            }
         };
-      };
       });
 
       // NEW TASK FORM - CLICK (CHECKBOX)

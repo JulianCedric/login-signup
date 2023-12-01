@@ -1,0 +1,274 @@
+/* <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" crossorigin="anonymous">
+  </head>
+<body>
+  <div class="container-fluid" style="margin: 3rem;">
+      
+    <!-- LOGIN FORM -->
+      <div class="row" id="login-form-container" style="display: none;">
+        <div class="col-md-offset-4 col-md-4 text-center well">
+          <form id="login-form" style="max-width: 320px;">
+            <h2>Log in</h2>
+            <div class="form-group">
+              <input class="form-control" id="username" type="text" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+              <input class="form-control" id="password" type="password" placeholder="Password" required>
+            </div>
+            <button class="btn btn-block btn-primary" type="submit">Log in</button>
+            <hr>
+            <h4>Don't have an account? <a href="#signup-form-container" id="signup-link">Sign up</a></h4>
+          </form>
+        </div>
+      </div>
+      
+      <!-- SIGNUP FORM -->
+      <div class="row" id="signup-form-container" style="display: none">
+        <div class="col-md-offset-4 col-md-4 text-center well">
+          <form id="signup-form" style="max-width: 320px;">
+            <h2>Sign up</h2>
+            <div class="form-group">
+              <input class="form-control" id="email" type="email" placeholder="Email" required>
+            </div>
+            <div class="form-group">
+              <input class="form-control" id="first-name" type="text" placeholder="First Name" required>
+            </div>
+            <div class="form-group">
+              <input class="form-control" id="last-name" type="text" placeholder="Last Name" required>
+            </div>
+            <div class="form-group">
+              <input class="form-control" id="new-username" type="text" placeholder="Username" required>
+            </div>
+            <div class="form-group">
+              <input class="form-control" id="new-password" type="password" placeholder="Password" required>
+            </div>
+            <button class="btn btn-block btn-primary" type="submit">Sign Up</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- NEW TASK FORM -->
+      <div class="row" id="new-task-form-container" style="display: block;">
+        <div class="col-md-offset-4 col-md-4">
+          <form id="new-task-form" style="max-width: 320px;">
+            <h2 class="text-center">Tasks</h2>
+            <div class="form-group">
+              <input class="form-control" id="new-task" placeholder="New task" required>
+            </div>
+            <button class="btn btn-block btn-primary">Submit</button>
+          </form>
+          <hr>
+          <div>
+            <ol id="tasks-ol" style="max-width: 320px;">
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" id="edit-task-container" style="display: none">
+      <div class="col-md-offset-4 col-md-4">
+        <form id="edit-task-form">
+          <div class="form-group">
+            <input class="form-control" id="edit-task" required>
+          </div>
+          <div class="row">
+            <div class="col-xs-6">
+              <button class="btn btn-default">Save & Submit</button>
+            </div>
+            <div class="col-xs-6">
+              <button class="btn btn-default">Cancel</button>
+            </div>
+          </div>
+          </form>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+
+      // DATA
+      let users = [{ id: 1, email: 'user1@email.com', firstName: 'Lil', lastName: 'JJ', username: 'user1', password: 'pass1' }];
+      let tasks = [];
+
+      document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('username').focus();
+      });
+
+      // LOGIN FORM
+      document.getElementById('login-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        let username = document.getElementById('username').value;
+        let password = document.getElementById('password').value;
+
+        for (let i = 0; i < users.length; i++) {
+          if (users[i].username == username && users[i].password == password) {
+            document.getElementById('login-form-container').style.display = 'none';
+            document.getElementById('new-task-form-container').style.display = 'block';
+            document.getElementById('new-task').focus();
+            console.log('user logged in');
+          } else {
+            alert('The username or password you entered is incorrect. Please try again.');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('username').focus();
+            console.log('user entered incorrect username or password');
+          };
+        };
+      });
+
+      // SIGNUP LINK
+      document.getElementById('signup-link').addEventListener('click', function(e) {
+        document.getElementById('login-form-container').style.display = 'none';
+        document.getElementById('signup-form-container').style.display = 'block';
+        document.getElementById('email').focus();
+        console.log('user clicked signup link');
+      });
+
+      // SIGNUP FORM
+      document.getElementById('signup-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        let newId = users.length + 1;
+        let email = document.getElementById('email').value;
+        let firstName = document.getElementById('first-name').value;
+        let lastName = document.getElementById('last-name').value;
+        let newUsername = document.getElementById('new-username').value;
+        let newPassword = document.getElementById('new-password').value;
+
+        let newUser = {
+          id: newId,
+          email: email,
+          firstName: firstName,
+          lastName: lastName,
+          username: newUsername,
+          password: newPassword
+        };
+        users.push(newUser);
+        console.log('new user account created');
+        console.log('users:', users);
+
+        document.getElementById('signup-form-container').style.display = 'none';
+        document.getElementById('new-task-form-container').style.display = 'block';
+        document.getElementById('new-task').focus();
+        console.log('new user signed up');
+      });
+      
+      // NEW TASK FORM - SUBMIT
+      document.getElementById('new-task-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        // console.log('e:', e);
+        // console.log('e.target.name:', e.target.name);
+
+        let newId = tasks.length + 1;
+        let newTaskDesc = document.getElementById('new-task').value;
+        let newTask = { id: newId, desc: newTaskDesc};
+        tasks.push(newTask);
+        console.log('new task created');
+        console.log('tasks:', tasks);
+
+        let tasksOl = document.getElementById('tasks-ol');
+        let newTaskDiv = document.createElement('div');
+        newTaskDiv.innerHTML = `
+          <div class="row">
+            <div class="col-xs-8">
+              <input id="task-${newId}" type="checkbox" style="text-decoration: none;">
+              <label id="label-task-${newId}" for="task-${newId}">${newTaskDesc}</label>
+            </div>
+            <div class="col-xs-2">
+              <button id="edit-task-btn-${newId}" class="btn btn-default" style="width: 100%; border: none;">
+                <i class="fa fa-edit"></i>
+              </button>
+            </div>
+            <div class="col-xs-2">
+              <button id="delete-task-btn-${newId}" class="btn btn-default" style="width: 100%; border: none;">
+                <i class="fa fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        `;
+        tasksOl.appendChild(newTaskDiv);
+        document.getElementById('new-task').value = '';
+        document.getElementById('username').focus();
+        console.log('user created a new task');
+      }); 
+
+      // EDIT TASK
+      document.getElementById('tasks-ol').addEventListener('click', function(e) {
+        if (e.target && e.target.id.startsWith('edit-task-btn')) {
+          let taskId = e.target.id.split('-')[3];
+          console.log('taskId:', taskId);
+          editTask(taskId);
+        } else if (e.target && e.target.id.startsWith('save-task-btn')) {
+          // e.stopPropagation();
+          let taskId = e.target.id.split('-')[3];
+          saveEditedTask(taskId)
+        }; 
+
+        function editTask(taskId) {
+          console.log('user is editing task #', taskId);
+
+          let taskLabel = document.getElementById(`label-task-${taskId}`);          
+          let taskText = taskLabel.innerText;
+          console.log('taskLabel:', taskText);
+          
+          let editInputHtml = `<input id='new-task-${taskId}' type='text' value='${taskText}'>`;
+          let space = `<span> </span>`;
+          let saveButtonHtml = `<button id='save-task-btn-${taskId}' class='btn btn-default' style='border: none;'><i class="fa fa-save"></i></button>`;
+          taskLabel.innerHTML = editInputHtml + space + saveButtonHtml;
+        };
+        
+        function saveEditedTask(taskId) {
+          let editedText = document.getElementById(`new-task-${taskId}`).value;
+
+          // Update the task in your tasks array
+          let taskIndex = tasks.findIndex(task => task.id === parseInt(taskId));
+          if (taskIndex !== -1) {
+            tasks[taskIndex].desc = editedText;
+          };
+
+          let taskLabel = document.getElementById(`label-task-${taskId}`);
+          taskLabel.innerHTML = editedText;
+        };
+      });
+
+      // DELETE TASK
+      document.getElementById('tasks-ol').addEventListener('click', function(e) {
+        if (e.target && e.target.id.startsWith('delete-task-btn')) {
+          let taskId = e.target.id.split('-')[3];
+          console.log('user clicked delete btn for task #', taskId);
+          deleteTask(taskId);
+        };
+        function deleteTask(taskId) {
+        taskId = parseInt(taskId);
+        let updatedTasks = tasks.filter(task => task.id !== taskId);
+        tasks = updatedTasks;
+
+        console.log('task #', taskId, ' deleted');
+        console.log('tasks:', tasks);
+
+        let taskElem = document.getElementById(`task-${taskId}`).parentNode.parentNode;
+        if (taskElem) {
+          taskElem.remove();
+        };
+      };
+      });
+
+      // NEW TASK FORM - CLICK (CHECKBOX)
+      document.getElementById('task-checkbox').addEventListener('click', function(e) {
+        console.log('checked');
+        console.log('e:', e);
+
+        if (e.target.checked) {
+          document.getElementById('task-text').style.textDecoration = 'line-through';
+        } else {
+          document.getElementById('task-text').style.textDecoration = 'none';
+        };
+      });
+    </script> 
+  </body>
+</html> */
