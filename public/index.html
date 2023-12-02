@@ -28,8 +28,8 @@
     <div class="container-fluid" style="margin: 3rem;">
       
     <!-- LOGIN FORM -->
-      <div class="row" id="login-form-container" style="display: none;">
-        <div class="col-md-offset-4 col-md-4 text-center well">
+      <div class="row" id="login-form-container" style="display: block;">
+        <div class="col-md-offset-4 col-md-4 text-center well" style="max-width: 35rem;">
           <form id="login-form">
             <h2>Log in</h2>
             <div class="form-group">
@@ -40,14 +40,14 @@
             </div>
             <button class="btn btn-block btn-primary" type="submit">Log in</button>
             <hr>
-            <h4>Don't have an account? <a href="#signup-form-container" id="signup-link">Sign up</a></h4>
+            <h5>Don't have an account? <a href="#signup-form-container" id="signup-link">Sign up</a></h5>
           </form>
         </div>
       </div>
       
       <!-- SIGNUP FORM -->
-      <div class="row" id="signup-form-container" style="display: none">
-        <div class="col-md-offset-4 col-md-4 text-center well">
+      <div class="row" id="signup-form-container" style="display: none;">
+        <div class="col-md-offset-4 col-md-4 text-center well" style="max-width: 35rem;">
           <form id="signup-form">
             <h2>Sign up</h2>
             <div class="form-group">
@@ -67,14 +67,14 @@
             </div>
             <button class="btn btn-block btn-primary" type="submit">Sign Up</button>
             <hr>
-            <h4>Already have an account? <a href="#login-form-container" id="login-link">Log in</a></h4>
+            <h5>Already have an account? <a href="#login-form-container" id="login-link">Log in</a></h5>
           </form>
         </div>
       </div>
 
       <!-- NEW TASK FORM -->
-      <div class="row" id="new-task-form-container" style="display: block;">
-        <div class="col-md-offset-4 col-md-4">
+      <div class="row" id="new-task-form-container" style="display: none;">
+        <div class="col-md-offset-4 col-md-4" style="max-width: 35rem;">
           <form id="new-task-form">
             <h2 class="text-center">Tasks</h2>
             <div class="form-group">
@@ -94,7 +94,7 @@
 
     <!-- EDIT TASK FORM -->
     <div class="row" id="edit-task-container" style="display: none; margin: 3rem;">
-      <div class="col-md-offset-4 col-md-4" style="padding: 6rem;">
+      <div class="col-md-offset-4 col-md-4" style="max-width: 35rem;">
         <form id="edit-task-form">
           <div class="form-group">
             <input class="form-control" id="edit-task" required>
@@ -315,7 +315,9 @@
               console.log('containerElem:', containerElem);
               if (containerElem) {
                 containerElem.remove();
-                console.log('here')
+                if (tasks.length == 0) {
+                  document.getElementById('tasks-container').style.display = 'none';
+                };
               }
             }
         };
