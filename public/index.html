@@ -4,6 +4,12 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" crossorigin="anonymous">
     <style>
+
+      body {
+        background-image: url(./images/blurred_image.png);
+        background-repeat: no-repeat;
+        background-size: cover;
+      }
       .btn:hover i {
         color: orange;
         background: none;
@@ -78,7 +84,7 @@
           </form>
           <hr>
           <div>
-            <div class="well" id="tasks-container">
+            <div class="well" id="tasks-container" style="display: none;">
               <ol id="tasks-ol" style="margin: 0 0 -1rem -4.5rem;"></ol>
             </div>
           </div>
@@ -204,6 +210,8 @@
         // console.log('e:', e);
         // console.log('e.target.name:', e.target.name);
 
+        document.getElementById('tasks-container').style.display = 'block';
+
         totalCount += 1;
         let newId = totalCount;
         let newTaskDesc = document.getElementById('new-task').value;
@@ -275,6 +283,11 @@
             console.log('tasks:', tasks);
           };
         };
+      });
+
+      document.getElementById('cancel-btn').addEventListener('click', function(e) {
+        document.getElementById('edit-task-container').style.display = 'none';
+        console.log('user clicked cancel btn');
       });
 
       // DELETE TASK
