@@ -4,7 +4,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous"/>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" crossorigin="anonymous">
     <style>
-
       body {
         background-image: url(./images/blurred_image.png);
         background-repeat: no-repeat;
@@ -20,15 +19,15 @@
     </style>
   </head>
   <body>
-    <div id="header-div" style="display: none;">
+    <div id="header-div" style="display: none; margin: 3rem 0 -3rem 3rem;">
       <header class="header">
-        <a href="#login-form-container" id="logout-link">Log out</a>
+        <a href="#login-form-container" id="logout-link"><h5>Log out</h5></a>
       </header>
     </div>
     <div class="container-fluid" style="margin: 3rem;">
       
     <!-- LOGIN FORM -->
-      <div class="row" id="login-form-container" style="display: block;">
+      <div class="row" id="login-form-container" style="display: block; margin-top: 2rem;">
         <div class="col-md-offset-4 col-md-4 text-center well" style="max-width: 35rem;">
           <form id="login-form">
             <h2>Log in</h2>
@@ -182,8 +181,11 @@
         console.log('users:', users);
 
         document.getElementById('signup-form-container').style.display = 'none';
+        document.getElementById('logout-link').style.display = 'block';
         document.getElementById('new-task-form-container').style.display = 'block';
         document.getElementById('header-div').style.display = 'block';
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
         document.getElementById('new-task').focus();
         console.log('new user signed up');
       });
@@ -199,6 +201,7 @@
       // LOGOUT LINK
       document.getElementById('logout-link').addEventListener('click', function(e) {
         document.getElementById('new-task-form-container').style.display = 'none';
+        document.getElementById('logout-link').style.display = 'none';
         document.getElementById('login-form-container').style.display = 'block';
         document.getElementById('username').focus();
         console.log('user logged out');
